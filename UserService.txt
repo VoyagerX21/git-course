@@ -1,4 +1,4 @@
 get user data...
 process the data
 
-creating user an avatar yes
+creating user an avatar
