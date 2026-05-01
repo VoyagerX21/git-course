@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Remote Sensing Study Pack</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0d1117;
+    --bg2: #161b22;
+    --bg3: #21262d;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --green: #3fb950;
+    --green-dim: #1a3a20;
+    --blue: #58a6ff;
+    --blue-dim: #0d2040;
+    --yellow: #d29922;
+    --yellow-dim: #2d2010;
+    --red: #f85149;
+    --red-dim: #2d0f0d;
+    --purple: #bc8cff;
+    --purple-dim: #1e1040;
+    --teal: #39d5c7;
+    --teal-dim: #0a2e2c;
+    --orange: #f0883e;
+    --orange-dim: #2d1800;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* NAV TABS */
+  .tab-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    padding: 0 1.5rem;
+  }
+  .tab-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 1rem 1.4rem;
+    border: none;
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: color 0.2s, border-color 0.2s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+
+  .tab-pane { display: none; padding: 2rem 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .tab-pane.active { display: block; }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--bg2) 0%, #0a1628 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    color: var(--text);
+    margin-bottom: 0.4rem;
+  }
+  .hero p { color: var(--muted); font-size: 0.9rem; }
+
+  /* SECTION HEADERS */
+  .sec-header {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* CARDS */
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+  .card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem;
+  }
+  .card h3 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .card ul { list-style: none; }
+  .card ul li {
+    font-size: 0.82rem;
+    color: var(--muted);
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #1e2530;
+    padding-left: 1rem;
+    position: relative;
+  }
+  .card ul li::before { content: '→'; position: absolute; left: 0; color: var(--border); }
+  .card ul li:last-child { border-bottom: none; }
+  .card ul li span { color: var(--text); }
+
+  .tag {
+    display: inline-block;
+    font-size: 0.65rem;
+    font-family: 'Space Mono', monospace;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .tag-green { background: var(--green-dim); color: var(--green); }
+  .tag-blue { background: var(--blue-dim); color: var(--blue); }
+  .tag-yellow { background: var(--yellow-dim); color: var(--yellow); }
+  .tag-red { background: var(--red-dim); color: var(--red); }
+  .tag-purple { background: var(--purple-dim); color: var(--purple); }
+  .tag-teal { background: var(--teal-dim); color: var(--teal); }
+  .tag-orange { background: var(--orange-dim); color: var(--orange); }
+
+  /* FORMULA CARDS */
+  .formula-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .formula-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.9rem 1.2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .formula-card-head h3 { font-size: 0.9rem; font-weight: 600; }
+  .formula-card-body { padding: 1.2rem; }
+  .formula-block {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.2rem;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.95rem;
+    color: var(--green);
+    margin: 0.6rem 0;
+    text-align: center;
+    letter-spacing: 0.03em;
+  }
+  .formula-vars { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.8rem; }
+  .var-item {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+  }
+  .var-item code { color: var(--yellow); font-family: 'Space Mono', monospace; font-size: 0.8rem; }
+  .range-badge {
+    display: inline-block;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+    font-family: 'Space Mono', monospace;
+    color: var(--purple);
+    margin-top: 0.5rem;
+  }
+  .formula-notes { font-size: 0.8rem; color: var(--muted); margin-top: 0.8rem; line-height: 1.6; }
+  .formula-notes b { color: var(--text); }
+
+  /* BANDS TABLE */
+  .bands-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .bands-table th {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    background: var(--bg3);
+  }
+  .bands-table td {
+    padding: 0.6rem 0.8rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .bands-table tr:hover td { background: var(--bg3); }
+
+  /* USE CASE TABLE */
+  .uc-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+  .uc-table th {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    padding: 0.7rem 1rem;
+    text-align: left;
+    border-bottom: 2px solid var(--border);
+    background: var(--bg3);
+    white-space: nowrap;
+  }
+  .uc-table td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.6;
+  }
+  .uc-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .uc-table td:first-child { white-space: nowrap; }
+
+  .uc-item { display: flex; align-items: flex-start; gap: 0.4rem; margin-bottom: 0.3rem; font-size: 0.8rem; color: var(--muted); }
+  .uc-item::before { content: '◆'; font-size: 0.5rem; color: var(--blue); margin-top: 0.3rem; flex-shrink: 0; }
+  .uc-item:last-child { margin-bottom: 0; }
+
+  /* QUESTIONS */
+  .q-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 1.2rem;
+    overflow: hidden;
+  }
+  .q-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    user-select: none;
+  }
+  .q-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    background: var(--blue-dim);
+    color: var(--blue);
+    border: 1px solid #1a4a7a;
+    border-radius: 4px;
+    padding: 0.2rem 0.5rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  .q-text { font-size: 0.88rem; line-height: 1.6; flex: 1; }
+  .q-toggle {
+    font-size: 1.1rem;
+    color: var(--muted);
+    flex-shrink: 0;
+    transition: transform 0.3s;
+    margin-top: 0.1rem;
+  }
+  .q-card.open .q-toggle { transform: rotate(180deg); color: var(--blue); }
+  .q-answer {
+    display: none;
+    border-top: 1px solid var(--border);
+    padding: 1.2rem;
+    background: #0a0f16;
+  }
+  .q-card.open .q-answer { display: block; }
+  .q-answer p { font-size: 0.82rem; color: var(--muted); line-height: 1.7; margin-bottom: 0.5rem; }
+  .q-answer p:last-child { margin-bottom: 0; }
+  .q-answer b { color: var(--text); }
+  .q-answer .hint {
+    background: var(--green-dim);
+    border: 1px solid #1e5a28;
+    border-radius: 5px;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.78rem;
+    color: var(--green);
+    margin-top: 0.6rem;
+  }
+  .q-answer .hint b { color: var(--green); }
+
+  /* SPECTRUM VIZ */
+  .spectrum-bar {
+    height: 24px;
+    border-radius: 4px;
+    background: linear-gradient(to right,
+      #7c00ff 0%, #4400ff 8%, #0055ff 14%, #00aaff 18%,
+      #00ff88 22%, #00ff00 28%, #88ff00 33%,
+      #ffff00 38%, #ffaa00 42%, #ff5500 46%, #ff0000 50%,
+      #cc0000 54%, #880000 60%,
+      #440000 70%, #220000 85%, #110000 100%
+    );
+    margin: 0.5rem 0;
+    position: relative;
+  }
+  .spec-labels { display: flex; justify-content: space-between; font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--muted); margin-bottom: 1.2rem; }
+
+  /* QUICK REFERENCE NDVI TABLE */
+  .ndvi-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin-top: 0.5rem; }
+  .ndvi-table td { padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--border); }
+  .ndvi-table td:first-child { font-family: 'Space Mono', monospace; font-size: 0.8rem; color: var(--purple); }
+  .ndvi-table td:last-child { color: var(--muted); }
+
+  /* DIFF TABLE */
+  .diff-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 600px) { .diff-grid { grid-template-columns: 1fr; } }
+
+  .diff-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+  .diff-box h4 { font-size: 0.82rem; font-weight: 600; margin-bottom: 0.6rem; }
+  .diff-box li { font-size: 0.79rem; color: var(--muted); padding: 0.25rem 0 0.25rem 1rem; position: relative; list-style: none; }
+  .diff-box li::before { content: '✓'; position: absolute; left: 0; color: var(--green); }
+  .diff-box.bad li::before { content: '✗'; color: var(--red); }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .tab-btn { padding: 0.8rem 0.8rem; font-size: 0.65rem; }
+    .hero h1 { font-size: 1.5rem; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Remote Sensing Study Pack</h1>
+  <p>Estimating Earth Surface Properties · Spectral Indices · Exam Prep</p>
+</div>
+
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="showTab('cheatsheet')">📋 Cheat Sheet</button>
+  <button class="tab-btn" onclick="showTab('formulas')">🧮 Formula Sheet</button>
+  <button class="tab-btn" onclick="showTab('usecases')">🎯 Use Cases</button>
+  <button class="tab-btn" onclick="showTab('questions')">❓ Practice Q&amp;A</button>
+</div>
+
+<!-- =================== CHEAT SHEET =================== -->
+<div class="tab-pane active" id="tab-cheatsheet">
+
+  <p class="sec-header">Why Monitor Earth Surface?</p>
+  <div class="card-grid">
+    <div class="card">
+      <h3><span class="tag tag-blue">PURPOSE</span> Why We Monitor</h3>
+      <ul>
+        <li><span>Understand regional to global environmental phenomena</span></li>
+        <li><span>Environmental degradation & climate change monitoring</span></li>
+        <li><span>Identify nature, extent & severity of degradation</span></li>
+        <li><span>Feed quantitative data into climate/hydro models</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="tag tag-green">WHAT</span> Surface Properties</h3>
+      <ul>
+        <li><span>Terrestrial:</span> Vegetation, Soil, Snow</li>
+        <li><span>Ocean</span> properties</li>
+        <li>Where is it? → <span>Location/type</span></li>
+        <li>How much? → <span>Amount / biomass</span></li>
+        <li>What condition? → <span>Physical property</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="tag tag-yellow">VEG</span> Vegetation Measures</h3>
+      <ul>
+        <li>Amount: <span>Biomass, LAI (Leaf Area Index)</span></li>
+        <li>Structure: <span>LAI, canopy architecture</span></li>
+        <li>Condition: <span>Pigment content, moisture stress</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="sec-header">Spectral Regions of Vegetation</p>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:1.2rem;margin-bottom:1rem;">
+    <div class="spectrum-bar"></div>
+    <div class="spec-labels">
+      <span>UV</span><span>Visible (400–700nm)</span><span>NIR (700–1300nm)</span><span>SWIR (1300–2500nm)</span>
+    </div>
+    <div class="card-grid" style="margin-top:0;">
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:0.8rem;">
+        <div class="tag tag-green" style="margin-bottom:0.5rem;">VISIBLE</div>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">Chlorophyll absorbs red & blue light for photosynthesis. Reflects green → plants look green. Low red reflectance = high chlorophyll activity.</p>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:0.8rem;">
+        <div class="tag tag-blue" style="margin-bottom:0.5rem;">NEAR-INFRARED (NIR)</div>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">Vegetation reflects strongly (~40-50%). Driven by internal leaf cellular structure (mesophyll). High NIR = healthy/abundant vegetation. Soil also reflects here.</p>
+      </div>
+      <div style="background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:0.8rem;">
+        <div class="tag tag-red" style="margin-bottom:0.5rem;">SHORTWAVE INFRARED (SWIR)</div>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">Dominated by liquid water absorption. High SWIR reflectance = dry/built-up areas. Used for moisture stress, built-up indices.</p>
+      </div>
+    </div>
+  </div>
+
+  <p class="sec-header">What Makes a Good Vegetation Index?</p>
+  <div class="card-grid">
+    <div class="card">
+      <h3><span class="tag tag-green">IDEAL</span> VI Criteria (Jackson 1983)</h3>
+      <ul>
+        <li><span>Sensitive to vegetative cover</span></li>
+        <li><span>Insensitive to soil background</span></li>
+        <li>Little affected by <span>atmospheric effects</span></li>
+        <li>Not affected by <span>solar illumination geometry</span></li>
+        <li>Not affected by <span>sensor viewing conditions</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="tag tag-yellow">GOALS</span> What VIs Should Do</h3>
+      <ul>
+        <li><span>Indicate AMOUNT</span> of vegetation (% cover, LAI, biomass)</li>
+        <li><span>Distinguish soil vs vegetation</span></li>
+        <li><span>Reduce atmospheric effects</span> if possible</li>
+        <li>Reduce <span>topographic effects</span></li>
+        <li>Better sensitivity than <span>single spectral bands</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="sec-header">Soil Reflectance — The Problem</p>
+  <div class="card-grid">
+    <div class="card">
+      <h3><span class="tag tag-orange">SOIL</span> Soil Behaviour</h3>
+      <ul>
+        <li>Can be <span>bright in NIR</span> (like vegetation!) — especially dry soil</li>
+        <li>Can have <span>low red reflectance</span> (like vegetation!)</li>
+        <li>Wet soil = <span>much darker</span> than dry soil</li>
+        <li>BUT: <span>NIR–Red difference for soil</span> is much less than for live vegetation</li>
+        <li>Soil line: both wet/dry soil lie on a <span>diagonal in Red–NIR space</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="tag tag-teal">PROCESS</span> Ideal Workflow</h3>
+      <ul>
+        <li><span>Step 1:</span> Convert DN → Spectral Radiance</li>
+        <li><span>Step 2:</span> Atmospheric correction → Spectral Reflectance</li>
+        <li><span>Step 3:</span> Estimate Vegetation Index from reflectance</li>
+        <li>Always use <span>surface reflectance</span> not raw DN for VIs</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="sec-header">NDVI Value Reference Table</p>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;overflow:hidden;">
+    <table class="ndvi-table">
+      <tr><td>−1.0 to 0</td><td style="color:var(--blue);">●</td><td>Water bodies</td></tr>
+      <tr><td>−0.1 to 0.1</td><td style="color:var(--muted);">●</td><td>Barren rocks, sand, snow</td></tr>
+      <tr><td>0.2 to 0.5</td><td style="color:var(--yellow);">●</td><td>Shrubs, grasslands, senescing crops</td></tr>
+      <tr><td>0.6 to 1.0</td><td style="color:var(--green);">●</td><td>Dense vegetation / tropical rainforest</td></tr>
+      <tr><td>≈ 1 (soil)</td><td style="color:var(--orange);">●</td><td>SR = 1 for soil; &gt;1 for vegetation (SR index)</td></tr>
+    </table>
+  </div>
+
+  <p class="sec-header">Key Limitations to Remember</p>
+  <div class="card-grid">
+    <div class="card">
+      <h3><span class="tag tag-red">LIMITS</span> General VI Caveats</h3>
+      <ul>
+        <li>Background effects: <span>soil reflectance changes index</span></li>
+        <li>Atmospheric effects: <span>red scattered more than NIR</span></li>
+        <li>Viewing angle & <span>illumination geometry</span></li>
+        <li>Statistical relationships — <span>site & species specific</span></li>
+        <li>Mixed pixels: <span>multiple land covers per pixel</span></li>
+        <li>Sensor-specific bands: <span>results differ between satellites</span></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3><span class="tag tag-red">NDVI SPECIFIC</span> NDVI Weaknesses</h3>
+      <ul>
+        <li><span>Saturates at high biomass</span> — can't distinguish dense forests</li>
+        <li><span>Atmospheric scatter</span> reduces NDVI values</li>
+        <li>Sensitive to <span>soil background</span></li>
+        <li>Different soils beneath canopy → <span>different NDVI</span></li>
+        <li>Correlated to <span>many different things</span> — interpretation ambiguous</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- =================== FORMULA SHEET =================== -->
+<div class="tab-pane" id="tab-formulas">
+
+  <p class="sec-header">Vegetation Indices</p>
+
+  <div class="formula-card">
+    <div class="formula-card-head">
+      <h3>Difference Vegetation Index <span style="color:var(--muted);font-weight:400;">(DVI)</span></h3>
+      <span class="tag tag-green">SIMPLEST</span>
+    </div>
+    <div class="formula-card-body">
+      <div class="formula-block">DVI = NIR − Red</div>
+      <div class="range-badge">Range: Unbounded (depends on sensor values)</div>
+      <div class="formula-notes">
+        <b>Pros:</b> Sensitive to vegetation amount; distinguishes soil from vegetation.<br>
+        <b>Cons:</b> Does NOT handle atmospheric effects or shadows. Not normalized.
+      </div>
+    </div>
+  </div>
+
+  <div class="formula-card">
+    <div class="formula-card-head">
+      <h3>Simple Ratio <span style="color:var(--muted);font-weight:400;">(SR)</span></h3>
+      <span class="tag tag-blue">FIRST TRUE VI</span>
+    </div>
+    <div class="formula-card-body">
+      <div class="formula-block">SR = NIR / Red</div>
+      <div class="range-badge">SR = 1 for soil | SR &gt; 1 for vegetation | Unbounded upper limit</div>
+      <p style="font-size:0.82rem;color:var(--muted);margin-top:0.7rem;">Measures the slope of the line between the origin of Red–NIR space and the pixel value.</p>
+      <div class="formula-notes">
+        <b>Pros:</b> First true vegetation index; simple.<br>
+        <b>Cons:</b> Sensor noise is amplified; very large range makes interpretation/scaling difficult.
+      </div>
+      <div class="formula-vars" style="margin-top:0.8rem;">
+        <div style="font-size:0.78rem;color:var(--muted);">Example: High biomass (Red=10, NIR=50) → SR = 5 &nbsp;|&nbsp; Low biomass (Red=20, NIR=30) → SR = 1.5</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="formula-card">
+    <div class="formula-card-head">
+      <h3>Normalised Difference Vegetation Index <span style="color:var(--muted);font-weight:400;">(NDVI)</span></h3>
+      <span class="tag tag-green">MOST USED</span>
+    </div>
+    <div class="formula-card-body">
+      <div class="formula-block">NDVI = (NIR − Red) / (NIR + Red)</div>
+      <div class="range-badge">−1 ≤ NDVI ≤ +1</div>
+      <p style="font-size:0.82rem;color:var(--muted);margin-top:0.7rem;">Proposed by Rouse et al., 1973. Normalising constrains values to −1 to +1.</p>
+      <div class="formula-vars">
+        <div class="var-item"><code>NIR</code> Near-infrared reflectance</div>
+        <div class="var-item"><code>Red</code> Red band reflectance</div>
+      </div>
+      <div class="formula-notes" style="margin-top:0.8rem;">
+        <b>Water:</b> NIR ≈ 0 so NDVI is negative (−1 to 0) &nbsp;|&nbsp;
+        <b>Soil:</b> NIR ≈ Red → NDVI ≈ 0 &nbsp;|&nbsp;
+        <b>Dense veg:</b> NIR ≫ Red → NDVI → +1 (but saturates)<br>
+        <b>High biomass example:</b> (50−10)/(50+10) = 40/60 ≈ 0.66<br>
+        <b>Low biomass example:</b> (30−20)/(30+20) = 10/50 = 0.20
+      </div>
+    </div>
+  </div>
+
+  <div class="formula-card">
+    <div class="formula-card-head">
+      <h3>Soil Adjusted Vegetation Index <span style="color:var(--muted);font-weight:400;">(SAVI)</span></h3>
+      <span class="tag tag-yellow">SOIL CORRECTED</span>
+    </div>
+    <div class="formula-card-body">
+      <div class="formula-block">SAVI = (NIR − Red) × (1 + L) / (NIR + Red + L)</div>
+      <div class="range-badge">−1 ≤ SAVI ≤ +1 &nbsp;|&nbsp; L = 0.5 (standard soil adjustment factor)</div>
+      <div class="formula-vars">
+        <div class="var-item"><code>L</code> Soil brightness correction factor = 0.5</div>
+      </div>
+      <div class="formula-notes">
+        <b>Why L=0.5?</b> Empirically determined for intermediate vegetation density. L=1 for very sparse vegetation, L=0 → same as NDVI (dense canopy).<br>
+        <b>Key advantage over NDVI:</b> Accounts for soil background reflectance variation.
+      </div>
+    </div>
+  </div>
+
+  <div class="formula-card">
+    <div class="formula-card-head">
+      <h3>Enhanced Vegetation Index <span style="color:var(--muted);font-weight:400;">(EVI)</span></h3>
+      <span class="tag tag-purple">MODIS / ADVANCED</span>
+    </div>
+    <div class="formula-card-body">
+      <div class="formula-block">EVI = G × (NIR − Red) / (NIR + C₁×Red − C₂×Blue + L)</div>
+      <div class="formula-vars">
+        <div class="var-item"><code>G</code> = 2.5 (gain factor)</div>
+        <div class="var-item"><code>C₁</code> = 6 (aerosol resistance)</div>
+        <div class="var-item"><code>C₂</code> = 7.5 (aerosol resistance)</div>
+        <div class="var-item"><code>L</code> ≈ 1 (canopy background)</div>
+      </div>
+      <p style="font-size:0.82rem;color:var(--muted);margin-top:0.7rem;">Proposed by Huete et al., 2002. Uses MODIS NIR, Red, and Blue bands.</p>
+      <div class="formula-notes">
+        <b>Advantages over NDVI:</b><br>
+        1. Blue band corrects residual atmospheric contamination<br>
+        2. L factor minimises soil background effect<br>
+        3. Sensitive to HIGH biomass areas where NDVI saturates
+      </div>
+    </div>
+  </div>
+
+  <div class="formula-card">
+    <div class="formula-card-head">
+      <h3>MERIS Terrestrial Chlorophyll Index <span style="color:var(--muted);font-weight:400;">(MTCI)</span></h3>
+      <span class="tag tag-teal">CHLOROPHYLL</span>
+    </div>
+    <div class="formula-card-body">
+      <div class="formula-block">MTCI = (R_Band10 − R_Band9) / (R_Band9 − R_Band8)</div>
+      <div class="range-badge">0 to ~8 (unbounded in theory)</div>
+      <div class="formula-vars">
+        <div class="var-item"><code>Band 8</code> ~665 nm (Red)</div>
+        <div class="var-item"><code>Band 9</code> ~709 nm (Red edge)</div>
+        <div class="var-item"><code>Band 10</code> ~754 nm (NIR)</div>
+      </div>
+      <p style="font-size:0.82rem;color:var(--muted);margin-top:0.7rem;">Proposed by Dash &amp; Curran, 2004. Uses the "red edge" — the steep slope in vegetation reflectance between 680–780nm that shifts with chlorophyll content.</p>
+      <div class="formula-notes">
+        <b>With more chlorophyll:</b> Band10−Band9 INCREASES; Band9−Band8 DECREASES → MTCI increases.<br>
+        <b>ESA standard Level-2 product.</b> Limited atmospheric sensitivity.
+      </div>
+    </div>
+  </div>
+
+  <p class="sec-header">Built-Up & Water Indices</p>
+
+  <div class="formula-card">
+    <div class="formula-card-head">
+      <h3>Normalised Difference Built-up Index <span style="color:var(--muted);font-weight:400;">(NDBI)</span></h3>
+      <span class="tag tag-orange">URBAN</span>
+    </div>
+    <div class="formula-card-body">
+      <div class="formula-block">NDBI = (SWIR − NIR) / (SWIR + NIR)</div>
+      <div class="range-badge">−1 ≤ NDBI ≤ +1</div>
+      <div class="formula-notes">
+        Built-up/bare soil: <b>high SWIR, lower NIR</b> → positive NDBI.<br>
+        Water: <b>negative NDBI.</b> Vegetation: <b>low/negative NDBI</b> (NIR &gt; SWIR for green surfaces).
+      </div>
+    </div>
+  </div>
+
+  <div class="formula-card">
+    <div class="formula-card-head">
+      <h3>Built-Up Index <span style="color:var(--muted);font-weight:400;">(BU)</span></h3>
+      <span class="tag tag-orange">URBAN MAPPING</span>
+    </div>
+    <div class="formula-card-body">
+      <div class="formula-block">BU = NDBI − NDVI</div>
+      <div class="formula-notes">
+        Binary result: <b>high positive values = built-up / barren.</b><br>
+        Subtracting NDVI removes vegetation signal. Water has very low BU (both NDBI and NDVI negative/low).
+      </div>
+    </div>
+  </div>
+
+  <div class="formula-card">
+    <div class="formula-card-head">
+      <h3>Normalised Difference Water Index <span style="color:var(--muted);font-weight:400;">(NDWI / MNDWI)</span></h3>
+      <span class="tag tag-blue">WATER</span>
+    </div>
+    <div class="formula-card-body">
+      <div class="formula-block">NDWI = (NIR − SWIR) / (NIR + SWIR)   [Gao, 1996]</div>
+      <div class="formula-block">MNDWI = (Green − SWIR) / (Green + SWIR)   [Xu, 2005]</div>
+      <div class="range-badge">Water NDWI &gt; 0.5 | Vegetation: small values | Built-up: 0–0.2</div>
+      <div class="formula-notes">
+        Water reflects strongly in <b>blue-green visible</b>, absorbs NIR and SWIR completely.<br>
+        MNDWI (Modified) uses Green instead of NIR — performs better for urban water extraction.
+      </div>
+    </div>
+  </div>
+
+  <p class="sec-header">Quick Comparison Summary</p>
+  <div style="overflow-x:auto;">
+    <table class="bands-table" style="margin-top:0.5rem;">
+      <thead>
+        <tr>
+          <th>Index</th><th>Bands Used</th><th>Primary Purpose</th><th>Sensor</th><th>Key Limitation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="tag tag-green">NDVI</span></td><td>NIR, Red</td><td>General vegetation amount</td><td>Any multispectral</td><td>Saturates at high biomass, soil sensitive</td></tr>
+        <tr><td><span class="tag tag-blue">SR</span></td><td>NIR, Red</td><td>Biomass (first VI)</td><td>Any multispectral</td><td>Unbounded, noise amplified</td></tr>
+        <tr><td><span class="tag tag-yellow">SAVI</span></td><td>NIR, Red</td><td>Veg on sparse/varied soil</td><td>Any multispectral</td><td>L value needs calibration</td></tr>
+        <tr><td><span class="tag tag-purple">EVI</span></td><td>NIR, Red, Blue</td><td>LAI, canopy structure</td><td>MODIS</td><td>Needs blue band (not on all sensors)</td></tr>
+        <tr><td><span class="tag tag-teal">MTCI</span></td><td>Bands 8,9,10</td><td>Chlorophyll content</td><td>MERIS/Sentinel-3</td><td>MERIS-specific bands</td></tr>
+        <tr><td><span class="tag tag-orange">NDBI</span></td><td>SWIR, NIR</td><td>Built-up/impervious</td><td>Landsat TM/ETM+</td><td>Confused with dry bare soil</td></tr>
+        <tr><td><span class="tag tag-orange">BU</span></td><td>NDBI, NDVI</td><td>Urban area mapping</td><td>Landsat TM/ETM+</td><td>Binary; depends on both indices</td></tr>
+        <tr><td><span class="tag tag-blue">MNDWI</span></td><td>Green, SWIR</td><td>Water body extraction</td><td>Landsat/Sentinel</td><td>Turbid water may differ</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- =================== USE CASES =================== -->
+<div class="tab-pane" id="tab-usecases">
+  <p style="font-size:0.83rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.6;">Since your exam is case-study based, for each index below you'll find <b style="color:var(--text);">what type of scenario to use it in</b>, what you're trying to detect, and what signal tells you what.</p>
+
+  <p class="sec-header">Vegetation Indices — When to Use What</p>
+  <div style="overflow-x:auto;">
+    <table class="uc-table">
+      <thead>
+        <tr><th>Index</th><th>Best Use Cases / Scenarios</th><th>What High Value Means</th><th>What Low/Negative Means</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-green" style="font-size:0.75rem;">NDVI</span></td>
+          <td>
+            <div class="uc-item">Monitoring <b>crop health</b> over a season</div>
+            <div class="uc-item">Detecting <b>deforestation</b> or land cover change</div>
+            <div class="uc-item">Mapping <b>phenological cycles</b> (when crops green up/die back)</div>
+            <div class="uc-item">Estimating <b>primary productivity</b> and biomass in grasslands</div>
+            <div class="uc-item">Identifying <b>eco-regions</b> from space globally</div>
+            <div class="uc-item">Assessing <b>drought impact</b> on vegetation</div>
+          </td>
+          <td style="color:var(--green);font-size:0.8rem;">Dense, healthy, actively growing vegetation</td>
+          <td style="color:var(--blue);font-size:0.8rem;">Water (&lt;0), bare soil (≈0), stressed/dead veg (&lt;0.2)</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue" style="font-size:0.75rem;">SR</span></td>
+          <td>
+            <div class="uc-item">Comparing <b>biomass across sites</b> where soil type is consistent</div>
+            <div class="uc-item">Historical studies where NDVI wasn't yet used</div>
+            <div class="uc-item">Research needing <b>unbounded sensitivity</b> to high biomass</div>
+          </td>
+          <td style="color:var(--green);font-size:0.8rem;">High biomass (SR=5 means NIR 5× the Red)</td>
+          <td style="color:var(--orange);font-size:0.8rem;">SR=1 → soil. Values &lt;1 → unusual (water, shadow)</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-yellow" style="font-size:0.75rem;">SAVI</span></td>
+          <td>
+            <div class="uc-item">Arid/semi-arid regions with <b>sparse vegetation and visible soil</b></div>
+            <div class="uc-item">Mapping vegetation in <b>agricultural fields</b> after planting (early season)</div>
+            <div class="uc-item">Rangelands with <b>heterogeneous bare ground</b></div>
+            <div class="uc-item">Situations where NDVI gives <b>false high values due to bright soil</b></div>
+            <div class="uc-item"><b>Crop growth monitoring</b> across soil types with different brightness</div>
+          </td>
+          <td style="color:var(--green);font-size:0.8rem;">Vegetation with soil influence removed</td>
+          <td style="color:var(--muted);font-size:0.8rem;">Bare soil / sparse cover</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-purple" style="font-size:0.75rem;">EVI</span></td>
+          <td>
+            <div class="uc-item">Mapping <b>tropical rainforests</b> where NDVI saturates</div>
+            <div class="uc-item">Estimating <b>Leaf Area Index (LAI)</b> for carbon modelling</div>
+            <div class="uc-item">Studies requiring <b>atmospheric correction</b> (hazy/smoke-affected areas)</div>
+            <div class="uc-item">Dense boreal forests and <b>canopy structure mapping</b></div>
+            <div class="uc-item">Global <b>vegetation productivity monitoring</b> (MODIS products)</div>
+          </td>
+          <td style="color:var(--green);font-size:0.8rem;">Dense canopy with high LAI; healthy forest</td>
+          <td style="color:var(--muted);font-size:0.8rem;">Sparse/no vegetation or water/bare soil</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-teal" style="font-size:0.75rem;">MTCI</span></td>
+          <td>
+            <div class="uc-item">Monitoring <b>crop nitrogen/fertiliser status</b> (nitrogen affects chlorophyll)</div>
+            <div class="uc-item">Detecting <b>plant stress</b> before visible signs appear</div>
+            <div class="uc-item">Precision agriculture: <b>variable-rate fertilisation</b> decisions</div>
+            <div class="uc-item">Phenology: tracking <b>greenup and senescence</b> of forests</div>
+            <div class="uc-item">Monitoring <b>carbon uptake capacity</b> of ecosystems (chlorophyll = photosynthesis)</div>
+            <div class="uc-item">Assessing <b>pollution impact</b> on vegetation health</div>
+          </td>
+          <td style="color:var(--green);font-size:0.8rem;">High chlorophyll content, healthy photosynthesising canopy</td>
+          <td style="color:var(--red);font-size:0.8rem;">Low chlorophyll → stress, senescence, or sparse cover</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="sec-header">Built-Up & Water Indices — When to Use What</p>
+  <div style="overflow-x:auto;">
+    <table class="uc-table">
+      <thead>
+        <tr><th>Index</th><th>Best Use Cases / Scenarios</th><th>Positive/High Value</th><th>Negative/Low Value</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tag tag-orange" style="font-size:0.75rem;">NDBI</span></td>
+          <td>
+            <div class="uc-item">Mapping <b>urban sprawl</b> and expansion over time</div>
+            <div class="uc-item">Identifying <b>impervious surfaces</b> for urban heat island studies</div>
+            <div class="uc-item">Detecting <b>new construction</b> in peri-urban areas</div>
+            <div class="uc-item">Separating <b>built-up from vegetation</b> in land cover classification</div>
+          </td>
+          <td style="color:var(--orange);font-size:0.8rem;">Built-up areas, dry bare soil</td>
+          <td style="color:var(--blue);font-size:0.8rem;">Water bodies (negative), vegetation (low)</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-orange" style="font-size:0.75rem;">BU (Built-up Index)</span></td>
+          <td>
+            <div class="uc-item"><b>Automatic urban area extraction</b> from satellite imagery</div>
+            <div class="uc-item">Monitoring <b>urban land use change</b></div>
+            <div class="uc-item">Separating <b>built-up from barren land</b> AND vegetation simultaneously</div>
+          </td>
+          <td style="color:var(--orange);font-size:0.8rem;">Built-up / barren land</td>
+          <td style="color:var(--green);font-size:0.8rem;">Vegetation and water areas</td>
+        </tr>
+        <tr>
+          <td><span class="tag tag-blue" style="font-size:0.75rem;">NDWI / MNDWI</span></td>
+          <td>
+            <div class="uc-item">Mapping <b>rivers, lakes, reservoirs</b> extent</div>
+            <div class="uc-item">Monitoring <b>flood inundation</b> from satellite during/after flood events</div>
+            <div class="uc-item">Detecting <b>water stress</b> in vegetation (leaf water content via NDWI)</div>
+            <div class="uc-item">Tracking <b>reservoir levels</b> and drought impact on water bodies</div>
+            <div class="uc-item">MNDWI preferred for <b>urban water bodies</b> (less confusion with built-up)</div>
+          </td>
+          <td style="color:var(--blue);font-size:0.8rem;">Water bodies (&gt;0.5 typical)</td>
+          <td style="color:var(--orange);font-size:0.8rem;">Bare soil/built-up (0–0.2), dense veg (negative)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="sec-header">NDVI vs EVI — Decision Guide</p>
+  <div class="diff-grid">
+    <div class="diff-box">
+      <h4 style="color:var(--green);">Use NDVI when…</h4>
+      <ul>
+        <li>Working with ANY sensor (Landsat, SPOT, Sentinel-2)</li>
+        <li>Monitoring seasonal changes in temperate vegetation</li>
+        <li>You need a long historical archive for comparison</li>
+        <li>Vegetation density is LOW to MODERATE</li>
+        <li>Quick, general screening of land cover</li>
+      </ul>
+    </div>
+    <div class="diff-box">
+      <h4 style="color:var(--purple);">Use EVI when…</h4>
+      <ul>
+        <li>Working with MODIS data specifically</li>
+        <li>Studying tropical/dense boreal forests</li>
+        <li>Atmosphere is hazy or aerosol-rich (fires, dust)</li>
+        <li>You need LAI or canopy structural information</li>
+        <li>Soil background is variable and problematic</li>
+      </ul>
+    </div>
+    <div class="diff-box">
+      <h4 style="color:var(--yellow);">Use SAVI when…</h4>
+      <ul>
+        <li>Vegetation cover is SPARSE (&lt;30% canopy)</li>
+        <li>Soil is highly reflective (arid/bright soils)</li>
+        <li>NDVI is overestimating vegetation in bare areas</li>
+        <li>Early crop season mapping on agricultural fields</li>
+      </ul>
+    </div>
+    <div class="diff-box">
+      <h4 style="color:var(--teal);">Use MTCI when…</h4>
+      <ul>
+        <li>Need chlorophyll (not just biomass) information</li>
+        <li>Assessing plant health, nutrition, or stress</li>
+        <li>Using MERIS or Sentinel-3 OLCI data</li>
+        <li>Precision agriculture or detailed crop physiology</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- =================== QUESTIONS =================== -->
+<div class="tab-pane" id="tab-questions">
+  <p style="font-size:0.83rem;color:var(--muted);margin-bottom:1.5rem;line-height:1.6;">All questions are case-study based. Click a question to reveal the model answer and key points to include.</p>
+
+  <p class="sec-header">Agricultural & Crop Monitoring</p>
+
+  <div class="q-card" onclick="toggleQ(this)">
+    <div class="q-head">
+      <span class="q-num">Q1</span>
+      <span class="q-text">A farmer in a semi-arid region of India wants to monitor the health of his wheat crop from satellite imagery during the growing season. The soil in the region is sandy and highly reflective. Which vegetation index would you recommend and why? What precaution must be taken when extracting the index?</span>
+      <span class="q-toggle">▾</span>
+    </div>
+    <div class="q-answer">
+      <p><b>Recommended index: SAVI (Soil Adjusted Vegetation Index)</b></p>
+      <p>NDVI would be problematic here because the highly reflective sandy soil can increase the NIR reflectance signal, artificially inflating NDVI values and making sparse early-season crops appear denser than they are. SAVI corrects for this using the soil adjustment factor L (typically 0.5), which accounts for the soil brightness signal beneath the canopy.</p>
+      <p>As the season progresses and canopy cover increases, EVI could also be considered if MODIS data is available, as it further minimises soil and atmospheric effects.</p>
+      <p><b>Precautions:</b> (1) Atmospheric correction must be applied first — convert DN → radiance → surface reflectance before computing any index. (2) The L factor should ideally be calibrated for the specific soil type. (3) Results may be sensor-specific — Landsat SAVI and MODIS SAVI may yield slightly different values.</p>
+      <div class="hint"><b>Key terms to use:</b> soil background effect, soil line, L factor, surface reflectance, atmospheric correction, mixed pixels</div>
+    </div>
+  </div>
+
+  <div class="q-card" onclick="toggleQ(this)">
+    <div class="q-head">
+      <span class="q-num">Q2</span>
+      <span class="q-text">A government agency wants to detect nitrogen deficiency in a paddy field in Andhra Pradesh using remote sensing before the crop shows visible symptoms. Which spectral index is most appropriate and what physical principle underpins it?</span>
+      <span class="q-toggle">▾</span>
+    </div>
+    <div class="q-answer">
+      <p><b>Recommended index: MTCI (MERIS Terrestrial Chlorophyll Index)</b></p>
+      <p>Nitrogen deficiency in plants directly reduces chlorophyll production — chlorophyll requires nitrogen as a key building block. Therefore, detecting early nitrogen stress means measuring chlorophyll content in the canopy, not just biomass amount.</p>
+      <p><b>Physical principle:</b> Chlorophyll absorbs red light (~665 nm, Band 8) strongly. As chlorophyll content increases, the "red edge" — the steep rise in vegetation reflectance from ~680 to 780 nm — shifts toward longer wavelengths. MTCI captures this by computing the ratio of reflectance differences in Bands 9–10 (near red edge) to Bands 8–9 (red edge lower slope). A lower MTCI indicates lower chlorophyll, which correlates with nitrogen stress.</p>
+      <p>NDVI would not be sensitive enough here because it captures biomass/greenness broadly and saturates, not specifically tracking chlorophyll biochemistry.</p>
+      <div class="hint"><b>Key terms:</b> chlorophyll content, red edge, nitrogen deficiency, MERIS bands, biochemical indicator, plant stress detection</div>
+    </div>
+  </div>
+
+  <div class="q-card" onclick="toggleQ(this)">
+    <div class="q-head">
+      <span class="q-num">Q3</span>
+      <span class="q-text">Two satellite images of the same agricultural field are taken — one in April (growing season) and one in October (post-harvest). An analyst finds that the NDVI in April is 0.65 but in October is only 0.08. What do these values tell us, and what limitation of NDVI should the analyst be aware of when comparing results across time?</span>
+      <span class="q-toggle">▾</span>
+    </div>
+    <div class="q-answer">
+      <p><b>Interpretation:</b> NDVI of 0.65 in April indicates dense, actively growing and photosynthetically active vegetation (crops at peak growth). NDVI of 0.08 in October is close to zero, consistent with bare ground or harvested stubble with minimal live vegetation.</p>
+      <p>This demonstrates NDVI's usefulness for <b>phenological monitoring</b> — tracking the seasonal growth cycle and assessing the length of the growing season.</p>
+      <p><b>Limitations to note:</b></p>
+      <p>1. <b>Atmospheric effects:</b> If the atmosphere was hazier in one acquisition, red light is scattered more than NIR, which reduces NDVI values even if nothing changed on the ground. Atmospheric correction is essential for multi-temporal comparison.</p>
+      <p>2. <b>Soil background:</b> In October, the exposed soil brightness affects the index — different soil moisture conditions between seasons add noise.</p>
+      <p>3. <b>Sensor inconsistency:</b> If images are from different sensors, band widths differ, making direct NDVI comparison invalid without cross-calibration.</p>
+      <div class="hint"><b>Key terms:</b> phenology, seasonal NDVI profile, atmospheric correction, multi-temporal analysis, DN vs reflectance</div>
+    </div>
+  </div>
+
+  <p class="sec-header">Forest & Tropical Vegetation</p>
+
+  <div class="q-card" onclick="toggleQ(this)">
+    <div class="q-head">
+      <span class="q-num">Q4</span>
+      <span class="q-text">A researcher is mapping deforestation in the Amazon rainforest using MODIS data. She finds that NDVI fails to distinguish between areas of intact forest and areas recovering from selective logging, even though ground measurements show a 40% difference in biomass. Explain why this happens and suggest a better approach.</span>
+      <span class="q-toggle">▾</span>
+    </div>
+    <div class="q-answer">
+      <p><b>Problem: NDVI saturation at high biomass.</b></p>
+      <p>NDVI is based on a ratio of NIR and Red reflectance. At high vegetation densities (like tropical forest), the red band is almost completely absorbed by chlorophyll and cannot be further reduced — it effectively hits a floor. At the same time, NIR increases only marginally with additional leaf layers. The result is that NDVI saturates — it plateaus even when biomass continues to increase, making it impossible to distinguish dense forest from slightly less dense recovering forest.</p>
+      <p><b>Better approach: EVI (Enhanced Vegetation Index)</b></p>
+      <p>EVI was specifically designed for this situation. It uses MODIS bands (NIR, Red, Blue) and includes a canopy background correction (L factor) and aerosol resistance term (using Blue band). EVI remains sensitive to LAI and canopy differences in high-biomass environments where NDVI has already saturated. It is also less affected by the haze and aerosols common in the Amazon (from fires).</p>
+      <div class="hint"><b>Key terms:</b> NDVI saturation, high biomass, EVI, LAI sensitivity, MODIS, aerosol resistance, tropical forest monitoring</div>
+    </div>
+  </div>
+
+  <p class="sec-header">Urban & Land Use</p>
+
+  <div class="q-card" onclick="toggleQ(this)">
+    <div class="q-head">
+      <span class="q-num">Q5</span>
+      <span class="q-text">A city planner wants to track urban expansion in a rapidly growing city using Landsat satellite data from 2000 and 2020. Which index/indices would you use? Describe how you would map the new built-up areas and what confounding factors you must consider.</span>
+      <span class="q-toggle">▾</span>
+    </div>
+    <div class="q-answer">
+      <p><b>Recommended approach: NDBI + BU Index</b></p>
+      <p>NDBI (Normalised Difference Built-up Index) = (SWIR − NIR)/(SWIR + NIR). Built-up areas and bare soil reflect more SWIR than NIR, giving positive NDBI values. Water gives negative values.</p>
+      <p>The BU (Built-up Index) = NDBI − NDVI subtracts the vegetation signal, producing a binary-like map where high positive values indicate built-up or barren land and removing false positives from vegetated areas.</p>
+      <p><b>Workflow:</b> (1) Compute NDBI for both 2000 and 2020 images. (2) Compute BU for both. (3) Compare — areas that shifted from low/negative BU to high positive BU between dates represent new urban development.</p>
+      <p><b>Confounding factors:</b></p>
+      <p>1. <b>Dry bare soil</b> also gives high NDBI — new construction areas may be confused with agricultural bare fields or rocky outcrops. Seasonal timing of image acquisition matters.</p>
+      <p>2. <b>Atmospheric correction</b> must be consistent between 2000 and 2020 images.</p>
+      <p>3. Different <b>Landsat sensors</b> (TM vs OLI) have different band widths — cross-calibration needed.</p>
+      <div class="hint"><b>Key terms:</b> SWIR reflectance, NDBI, BU index, urban sprawl, impervious surfaces, change detection, seasonal timing</div>
+    </div>
+  </div>
+
+  <p class="sec-header">Water Bodies & Flood Mapping</p>
+
+  <div class="q-card" onclick="toggleQ(this)">
+    <div class="q-head">
+      <span class="q-num">Q6</span>
+      <span class="q-text">Following a severe monsoon flood event in a coastal district of Odisha, disaster management officials need to rapidly map the extent of flooded area using satellite imagery. Which index would you use and why? How would NDVI compare in effectiveness?</span>
+      <span class="q-toggle">▾</span>
+    </div>
+    <div class="q-answer">
+      <p><b>Recommended index: MNDWI (Modified NDWI)</b></p>
+      <p>Water has essentially zero reflectance in NIR and SWIR (it absorbs both), but reflects in the visible green spectrum. MNDWI = (Green − SWIR)/(Green + SWIR) exploits this: flooded pixels give high positive MNDWI values (&gt;0.5), while land (vegetation or built-up) gives low or negative values.</p>
+      <p>MNDWI is preferred over original NDWI for areas with mixed urban and water features because it uses the SWIR band which better separates water from built-up surfaces.</p>
+      <p><b>Comparison with NDVI:</b> NDVI would actually give <b>negative</b> values over water (since NIR ≈ 0), which could help identify flooded areas indirectly. However, flooded crops and vegetation also show reduced NDVI, making it hard to distinguish between "permanently inundated" vs "stressed/submerged vegetation." MNDWI directly targets the water signal and is more reliable for flood extent mapping.</p>
+      <p><b>Practical note:</b> Pre- and post-flood comparison using MNDWI change maps allows precise delineation of newly inundated areas.</p>
+      <div class="hint"><b>Key terms:</b> MNDWI, water reflectance, NIR absorption, green band, flood inundation, change detection, NDWI vs MNDWI</div>
+    </div>
+  </div>
+
+  <p class="sec-header">Multi-Index Reasoning</p>
+
+  <div class="q-card" onclick="toggleQ(this)">
+    <div class="q-head">
+      <span class="q-num">Q7</span>
+      <span class="q-text">An analyst extracts NDVI from a satellite image over a region and gets the following pixel values: Pixel A = 0.65, Pixel B = 0.04, Pixel C = −0.35, Pixel D = 0.15. For each pixel, identify the likely land cover type and explain the physical reasoning behind each NDVI value.</span>
+      <span class="q-toggle">▾</span>
+    </div>
+    <div class="q-answer">
+      <p><b>Pixel A (NDVI = 0.65):</b> Dense, healthy vegetation — likely forest or agricultural crop at peak growth. High NIR (from internal mesophyll structure) and very low red (absorbed by chlorophyll) gives high positive ratio.</p>
+      <p><b>Pixel B (NDVI = 0.04):</b> Bare soil or very sparse vegetation. NIR and Red are nearly equal, so the ratio approaches zero. Could also be urban/built-up area or sand.</p>
+      <p><b>Pixel C (NDVI = −0.35):</b> Water body. Water absorbs NIR almost completely, so NIR ≈ 0. Red reflectance is slightly higher (water reflects somewhat in visible blue-green). NIR − Red becomes negative → negative NDVI.</p>
+      <p><b>Pixel D (NDVI = 0.15):</b> Shrubland, grassland, or senescing/stressed crops. Some vegetation present but NIR–Red difference is modest. Could also be sparse dryland vegetation or areas recovering after disturbance.</p>
+      <div class="hint"><b>Exam tip:</b> Always link the NDVI value to the physical spectral behaviour — chlorophyll absorption of red, leaf internal structure causing high NIR, water absorbing NIR. Don't just say "high = vegetation."</div>
+    </div>
+  </div>
+
+  <div class="q-card" onclick="toggleQ(this)">
+    <div class="q-head">
+      <span class="q-num">Q8</span>
+      <span class="q-text">A scientist wants to compare vegetation health across two study sites: Site A is a dense tropical forest in the Western Ghats, and Site B is a sparse savanna in Rajasthan. She has MODIS imagery for both. Design a complete remote sensing methodology, choosing appropriate indices for each site and justifying your choices.</span>
+      <span class="q-toggle">▾</span>
+    </div>
+    <div class="q-answer">
+      <p><b>Site A — Dense tropical forest (Western Ghats): Use EVI + MTCI</b></p>
+      <p>NDVI is inappropriate because it will saturate — both the intact forest and any degraded patches will show similar NDVI values (~0.8+). EVI is designed for high-biomass environments and remains sensitive to canopy differences. Using MODIS EVI products (MOD13A) gives consistent time-series data. MTCI (if MERIS/Sentinel-3 data available) could assess chlorophyll to monitor forest health and photosynthetic capacity.</p>
+      <p><b>Site B — Sparse savanna (Rajasthan): Use SAVI + NDVI time series</b></p>
+      <p>Sparse vegetation means lots of exposed bright soil between plants. NDVI would overestimate vegetation due to high soil reflectance. SAVI with L=0.5 corrects for this. Seasonal NDVI time series can also show the pulse of vegetation greenup tied to monsoon rainfall.</p>
+      <p><b>Common methodology steps for both:</b></p>
+      <p>1. Atmospheric correction: convert DN → surface reflectance. 2. Select cloud-free composites. 3. Compute appropriate index. 4. Validate against ground measurements where possible. 5. Note sensor-specific band definitions.</p>
+      <div class="hint"><b>Key concept:</b> No single index is best for all situations — the choice depends on vegetation density, soil type, available sensor, and what property you are measuring (amount vs condition).</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showTab(id) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function toggleQ(card) {
+  card.classList.toggle('open');
+}
+</script>
+</body>
+</html>
